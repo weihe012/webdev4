@@ -150,7 +150,9 @@ request.then(function(values){
 	// add precincts layer to map
   	precinctsLayer.addTo(map);
 
-  	// FIXME: Display the current location of the mouse in latitude and
+
+});
+// FIXME: Display the current location of the mouse in latitude and
   	// longitude coordinates.
   	// Update this display as the mouse moves around the map.
   	// This doesn't have to use a leaflet control like the example above
@@ -163,10 +165,16 @@ request.then(function(values){
   	// more hints:
   	//  - first, create an event handler that will take the lat / long
   	//    and update an HTML (div) element with that information
+function mapHoverHandler(eventObject) {
+        console.log('event object', eventObject);
+        console.log('mouse lat/lng', eventObject.latlng)
+    //updating mouse coordinates HTML element with event layer
+        document.getElementById("mouseCoordinatesBox").innerHTML="newtext";
+}
   	//  - second, register an event listener with the map
   	//    (something like map.on(....))
+map.on('mousemove', mapHoverHandler);
+
   	//  - when it doubt use Google
   	//    (something to the effect of "leaflet display mouse coordinates"
   	//    should help)
-
-});
