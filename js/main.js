@@ -157,6 +157,8 @@ request.then(function(values){
   	// but it could
   	// hint: make use of the map events found here:
   	// https://leafletjs.com/reference-1.3.4.html#map-click
+  	// and the lat/long that is a part of mouse events here:
+  	// https://leafletjs.com/reference-1.3.4.html#mouseevent-latlng
 
   	// more hints:
   	//  - first, create an event handler that will take the lat / long
