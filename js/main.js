@@ -1,4 +1,4 @@
-// main.js
+//main.js
 
 // initialize map
 var map = L.map("map", {
@@ -33,7 +33,7 @@ info.update = function (props) {
 	"<tr><td>Total votes: </td><td>"+props.USPRSTOTAL+"</td></tr></table>" : "Hover over a precinct to see vote counts");
 };
 
-info.addTo(map);
+//info.addTo(map);
 
 ///////////////////////////////////////////////////////////////////////////////
 // ADDING AND SYMBOLIZING GEOJSON
@@ -150,9 +150,7 @@ request.then(function(values){
 	// add precincts layer to map
   	precinctsLayer.addTo(map);
 
-
-});
-// FIXME: Display the current location of the mouse in latitude and
+  	// FIXME: Display the current location of the mouse in latitude and
   	// longitude coordinates.
   	// Update this display as the mouse moves around the map.
   	// This doesn't have to use a leaflet control like the example above
@@ -161,20 +159,49 @@ request.then(function(values){
   	// https://leafletjs.com/reference-1.3.4.html#map-click
   	// and the lat/long that is a part of mouse events here:
   	// https://leafletjs.com/reference-1.3.4.html#mouseevent-latlng
+    
+    
+    // adding an event handler to display lat and lng
+    function mapHoverHandler(e) {
+        
+        coords.update(e.latlng);
+    }
+    
+    // adding hoverhandler to event
+    map.on('mousemove', mapHoverHandler);
 
   	// more hints:
   	//  - first, create an event handler that will take the lat / long
   	//    and update an HTML (div) element with that information
-function mapHoverHandler(eventObject) {
-        console.log('event object', eventObject);
-        console.log('mouse lat/lng', eventObject.latlng)
-    //updating mouse coordinates HTML element with event layer
-        document.getElementById("mouseCoordinatesBox").innerHTML="newtext";
-}
   	//  - second, register an event listener with the map
   	//    (something like map.on(....))
-map.on('mousemove', mapHoverHandler);
-
   	//  - when it doubt use Google
   	//    (something to the effect of "leaflet display mouse coordinates"
   	//    should help)
+
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// Adding mouse to show coordinates
+var coords = L.control();
+
+coords.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'coords'); 
+    //create a div
+    this.update();
+    return this._div;
+};
+
+//Will update as mouse moves
+coords.update = function (props) {
+    this._div.innerHTML =
+    (props ? 
+     "<p><strong>Latitude:</strong> &nbsp&nbsp"+props.lat.toFixed(10)+"</p>"+
+	"<p><strong>Longitude:</strong> "+props.lng.toFixed(10)+"</p>" : 
+    "<p><strong>Latitude:</strong> &nbsp&nbsp46.7300000000</p>"+
+	"<p><strong>Longitude:</strong> -92.1070000000</p>");
+};
+
+// adding to map
+coords.addTo(map);
+info.addTo(map);
